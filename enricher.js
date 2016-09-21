@@ -69,10 +69,11 @@ var computeGPX = function(gpxContent) {
 	$(gpxContent).find('trkseg').each(computeSegment);
 	var oSerializer = new XMLSerializer(); 
     var xmlString = oSerializer.serializeToString(gpxContent.get()[2]);
-	alert(gpxContent.get()[1]);
-	alert(xmlString);
 	$("#output").append(xmlString.encodeHTML());
 	log('Computation complete');
+	$('pre code').each(function(i, block) {
+    	hljs.highlightBlock(block);
+  	});
 };
 
 var toRad = function(angle) {
