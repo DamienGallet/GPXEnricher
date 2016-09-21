@@ -2,14 +2,41 @@ $("#gpxFile").change(loadFile);
 
 var linesNb = 0;
 var logger = $('#statusBox h4');
-var log = function(text) {
-	logger.html(text);
+var log = function(text, type) {
+	var logField = $("#logger");
+	if( logField.length == 0)
+	{
+		var loggerBlock = $("<div />", {
+			"class" : "callout "+ type,
+			"data-closable" : "slide-out-right",
+			"id" : "logger"
+		});
+
+		var closeButton = $("<button class='close-button' aria-label='Dismiss alert' type='button' data-close />");
+
+		var spanHidden = $("<span />", {
+			"aria-hidden" : "true"
+		});
+		spanHidden.html("&times;");
+
+		var content = $("<h5 />", {
+			id : "log"
+		}).text(text);
+
+		closeButton.append( spanHidden );
+		loggerBlock.append( content );
+		loggerBlock.append( closeButton );
+		$("#top-bar").after( loggerBlock );
+	} else {
+		logger.attr("class", "callout "+type);
+		$("#log").html(text);
+	}
 };
 
 if (window.File && window.FileReader && window.FileList && window.Blob) {
-  log('Initialization successfull');
+  log('We\'re just awaiting your file !', 'success');
 } else {
-  log('The File APIs are not fully supported in this browser.');
+  log('Your browser may not be able to load the files properly', 'alert');
 }
 
 /**
@@ -34,11 +61,45 @@ $(document).on('dragleave', '#upload', function(e) {
             return false;
 });
 
+$(function() {
+     $("input:file").change(function (){
+       var file = document.getElementById('gpxFile').files[0];
+       parseXML(file);
+     });
+  });
+
+$('#copy-content').on('click', function() {
+	copyToClipboard( $('#output') );
+});
+
+$('#download-content').on('click', function() {
+	text = $('#output').text();
+
+	var element = document.createElement('a');
+  	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  	element.setAttribute('download', 'GPXEnricherExport.gpx');
+
+  	element.style.display = 'none';
+  	document.body.appendChild(element);
+
+  	element.click();
+
+  	document.body.removeChild(element);
+});
+
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+
 $(document).on('drop', '#upload', function(e) {
 
 	if(e.originalEvent.dataTransfer){
 		if(e.originalEvent.dataTransfer.files.length) {
-			log('Load complete');
+			log('Your file is loaded properly, we are currently computing it, please let us a while !', 'success');
 			e.stopPropagation();
 			e.preventDefault();
 			$(this).css('border', '3px dashed green');
@@ -69,8 +130,10 @@ var computeGPX = function(gpxContent) {
 	$(gpxContent).find('trkseg').each(computeSegment);
 	var oSerializer = new XMLSerializer(); 
     var xmlString = oSerializer.serializeToString(gpxContent.get()[2]);
-	$("#output").append(xmlString.encodeHTML());
-	log('Computation complete');
+	$("#output").html(xmlString.encodeHTML());
+	log('Your computed file is ready in the window below !', 'success');
+	$('#copy-content').prop('disabled', false);
+	$('#download-content').prop('disabled', false);
 	$('pre code').each(function(i, block) {
     	hljs.highlightBlock(block);
   	});

@@ -1,28 +1,69 @@
 
 <body>
-	<div id="statusBox">
-		<h4>IDLE</h4>
-	</div>
-	<div id="upload">
-		<h2>Load here the GPX file</h2>
-		<form enctype="multipart/form-data" method="post">
-			<input type="file" name="gpxFile" id="gpxFile" />
-		</form>
-	</div>
-	<div>
-		<pre>
-			<code class="XML" id="output">
-			</code>
-		</pre>
-	</div>
-</body>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPX Enricher</title>
+    <link rel="stylesheet" href="modules/foundation/css/foundation.css">
+    <link rel="stylesheet" href="modules/foundation/css/foundation-icons.css">
+    <link rel="stylesheet" href="modules/foundation/css/app.css">
+  </head>
+  <body>
+    
+    <div class="top-bar" id="top-bar">
+    	<ul class="dropdown menu" data-dropdown-menu>
+      		<li class="menu-text">GPX Enricher</li>
+      	</ul>
+    </div>
 
-<link rel="stylesheet" href="modules/highlightJS/styles/monokai-sublime.css">
-<script src="modules/highlightJS/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+    
+    
+    <div class="expanded row">
+	    <div class="small-12 medium-4 column" id="upload">
+	        <h3>Load here the GPX file</h3>
+	        <form enctype="multipart/form-data" method="post">
+	        	<button class="file-upload button">            
+  					<input type="file" name="gpxFile" id="gpxFile" class="file-input">
+  					<i class="fi-folder"></i><span style="padding-left:20px">Choose File</span>
+  				</button>
+	        </form>
+	        <hr>
+	    </div>
+    	<div class="small-12 medium-8 column">
+    		<button type="button" class="button success" id="copy-content" disabled>
+    			<i class="fi-page-copy"></i><span style="padding-left:20px">Copy the result into clipboard</span>
+    		</button>
+    		<button type="button" class="button success" id="download-content" disabled>
+    			<i class="fi-download"></i><span style="padding-left:20px">Download the result</span>
+    		</button>
+    		<pre>
+	            <code class="XML" id="output">No data to show yet !
+	            </code>
+	        </pre>
+    	</div>
+    </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
-<script type="text/javascript" src="enricher.js"></script>
+    <!-- HIGHLIGHT JS Module Import -->
+    <link rel="stylesheet" href="modules/highlightJS/styles/monokai-sublime.css">
+    <script src="modules/highlightJS/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- JQuery Module (via CDN) Import -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.13.0/moment.min.js"></script>
+
+    <!-- Enricher Import -->
+    <script type="text/javascript" src="enricher.js"></script>
+
+    <!-- Foundation Module Import -->
+    <script src="modules/foundation/js/vendor/jquery.js"></script>
+    <script src="modules/foundation/js/vendor/what-input.js"></script>
+    <script src="modules/foundation/js/vendor/foundation.js"></script>
+    <script src="modules/foundation/js/app.js"></script>
+  </body>
+</html>
 
